@@ -1,6 +1,7 @@
 import copy
 import random
 
+
 # room_id = "111"
 # file = open(f"{room_id}_danmu.txt", "a", encoding='utf-8')
 # file.write("xxxxx\n")
@@ -56,11 +57,28 @@ def after_start_list(hp_list, damage):
     return copy_list
 
 
+# 打星之后 list 血量
+# 显示各位置的血量
+def after_start_list2(hp_list, damage):
+    copy_list = copy.deepcopy(hp_list)
+    index_list = list(range(0, len(copy_list)))
+    for i in range(damage, 0, -1):
+        if len(index_list) == 0:
+            break
+        random_index = index_list[random.randint(0, len(index_list) - 1)]
+        if copy_list[random_index] - i <= 0:
+            copy_list[random_index] = 0
+            index_list.remove(random_index)
+        else:
+            copy_list[random_index] -= i
+    return copy_list
+
+
 # list 血量分布
 def hp_distribution(hp_list, damage):
     temp_dict = {}
     for j in range(0, 10000):
-        ato_list = after_start_list(hp_list, damage)
+        ato_list = after_start_list2(hp_list, damage)
         if str(ato_list) in temp_dict.keys():
             temp_dict[str(ato_list)] += 1
         else:
@@ -69,6 +87,8 @@ def hp_distribution(hp_list, damage):
     return temp_dict
 
 
-# print(hp_distribution([8, 9], 5))
-print(solve_rate([8, 9], 5))
+param_list = [5, 3, 4]
+param_damage = 5
+print(hp_distribution(param_list, param_damage))
+print(solve_rate(param_list, param_damage))
 

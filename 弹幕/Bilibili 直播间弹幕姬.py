@@ -28,7 +28,8 @@ import sys
 # 梓 80397
 # 台风 22622779
 # dys 545068
-room_id = "80397"
+# lol 7734200
+room_id = "7734200"
 
 class Danmu:
     def __init__(self):
@@ -63,6 +64,7 @@ class Danmu:
             s.connect(Address)  # 尝试连接服务端
             s.sendall(msg.encode())  # 尝试向服务端发送消息
         except Exception:
+            # print(time.strftime("[%Y-%m-%d %H:%M:%S]",
             print(time.strftime("[%Y-%m-%d %H:%M:%S]",
                                 time.localtime()) + ' [ERROR] 无法连接到Socket服务器,请检查服务器是否启动')
         s.close()
@@ -80,7 +82,9 @@ class Danmu:
             timeline = content['timeline']
             # 记录发言
             # msg = '[' + timeline + ']' + ' ' + '[' + nickname + ']' + ' ' + '[' + text + ']'
-            msg = f"[{timeline}-{nickname}] {text}"
+            if text.find("下") != -1 or text.find("特效") != -1:
+                continue
+            msg = f"[{timeline[timeline.find('-')+1:-3]} {nickname}]： {text}"
             # 判断对应消息是否存在于日志，如果和最后一条相同则打印并保存
             if msg + '\n' not in self.log:
                 # 打印消息
